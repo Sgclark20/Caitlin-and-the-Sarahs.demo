@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capstone Demo | Do You Wanna Go</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --bg-soft: #ffffff;
+      --panel: #ffffff;
+      --panel-2: #f3f6fb;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --accent-1: #e754a6;
+      --accent-2: #52cfd0;
+      --accent-3: #f2c94c;
+      --accent-4: #87d96c;
+      --border: rgba(31, 41, 55, 0.1);
+      --shadow: 0 14px 32px rgba(31, 41, 55, 0.08);
+      --radius: 22px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(231,84,166,0.10), transparent 24%),
+        radial-gradient(circle at top right, rgba(82,207,208,0.10), transparent 22%),
+        linear-gradient(180deg, #fbfcfe 0%, #f4f7fb 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid rgba(31,41,55,0.08);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(from 0deg, var(--accent-2), var(--accent-4), var(--accent-3), var(--accent-1), var(--accent-2));
+      box-shadow: 0 10px 24px rgba(231, 84, 166, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(2px);
+    }
+
+    .brand-mark span {
+      position: relative;
+      z-index: 1;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #1f2937;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover,
+    .cta:hover,
+    .ghost:hover,
+    .tab-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 72px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.3rem, 4.5vw, 4.5rem);
+      line-height: 1.03;
+      margin: 18px 0 18px;
+      letter-spacing: -1.8px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 0 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .cta, .ghost, .tab-btn {
+      transition: 0.2s ease;
+    }
+
+    .cta, .ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .cta {
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      color: white;
+    }
+
+    .ghost {
+      border-color: var(--border);
+      background: rgba(255,255,255,0.75);
+      color: var(--text);
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.88));
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(231,84,166,0.18), transparent 65%);
+      top: -40px;
+      right: -40px;
+    }
+
+    .mock-window {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(31,41,55,0.08);
+      background: #ffffff;
+      min-height: 350px;
+    }
+
+    .mock-top {
+      display: flex;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(31,41,55,0.07);
+      background: #f9fbfe;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(31,41,55,0.22);
+    }
+
+    .mock-content {
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    .mini-card, .mini-chart {
+      border-radius: 18px;
+      background: #f7f9fc;
+      border: 1px solid rgba(31,41,55,0.06);
+      min-height: 100px;
+    }
+
+    .mini-calendar {
+      min-height: 150px;
+      border-radius: 18px;
+      background:
+        linear-gradient(rgba(82,207,208,0.05), rgba(231,84,166,0.03)),
+        repeating-linear-gradient(to right, transparent 0 13.5%, rgba(31,41,55,0.05) 13.5% 14%),
+        repeating-linear-gradient(to bottom, transparent 0 24%, rgba(31,41,55,0.05) 24% 25%);
+      border: 1px solid rgba(31,41,55,0.06);
+    }
+
+    section {
+      padding: 26px 0;
+    }
+
+    .section-head {
+      margin-bottom: 24px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      margin: 0 0 10px;
+      letter-spacing: -0.8px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.9));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .video-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(231,84,166,0.10), rgba(82,207,208,0.10));
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(231,84,166,0.10), rgba(82,207,208,0.10)),
+        #ffffff;
+      border: 1px dashed rgba(31,41,55,0.18);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 24px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .feature-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: #f9fbfe;
+      border: 1px solid rgba(31,41,55,0.06);
+    }
+
+    .feature-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.04rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .tab-btn {
+      background: #f5f7fb;
+      color: var(--text);
+      border: 1px solid rgba(31,41,55,0.08);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(90deg, rgba(231,84,166,0.16), rgba(82,207,208,0.16));
+      border-color: rgba(31,41,55,0.12);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .shot-card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid rgba(31,41,55,0.08);
+    }
+
+    .shot-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      background: linear-gradient(135deg, rgba(231,84,166,0.08), rgba(82,207,208,0.08));
+    }
+
+    .shot-meta {
+      padding: 16px;
+    }
+
+    .shot-meta h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .shot-meta p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .list li { margin-bottom: 8px; }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #f9fbfe;
+      border: 1px solid rgba(31,41,55,0.06);
+    }
+
+    footer {
+      padding: 22px 0 42px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .two-col,
+      .about-grid,
+      .feature-grid,
+      .gallery-grid,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div>
+          <div>Do You Wanna Go</div>
+          <div style="font-size:0.88rem; color: var(--muted); font-weight: 500;">Capstone Demo Website</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#how">How It Works</a>
+        <a href="#views">User Views</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="pill">Built for eventgoers, businesses, and admins</div>
+        <h1>Discover, manage, and grow events with one <span class="gradient-text">connected platform</span>.</h1>
+        <p>
+          This project is a complete event experience platform designed to help users find events, help businesses manage performance, and help administrators oversee activity in one place. This page is designed as a capstone marketing demo for possible users of the app.
+        </p>
+        <div class="hero-actions">
+          <a class="cta" href="#demo">Watch Final Demo</a>
+          <a class="ghost" href="#views">Explore Functionality</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="mock-window">
+          <div class="mock-top">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="mock-content">
+            <div class="mini-calendar"></div>
+            <div class="mini-grid">
+              <div class="mini-card"></div>
+              <div class="mini-card"></div>
+            </div>
+            <div class="mini-chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="demo">
+      <div class="container">
+        <div class="section-head">
+          <h2>Final Demo Video</h2>
+          <p>
+            Embed your final demo video here. If your video is not ready yet, keep the placeholder until you have a YouTube, Vimeo, or direct embed link.
+          </p>
+        </div>
+        <div class="panel">
+          <div class="video-placeholder">
+            <div>
+              <h3 style="margin-top:0; margin-bottom:10px;">Video Placeholder</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-head">
+          <h2>How and Why to Use the App</h2>
+          <p>
+            This section explains the value of the platform in a simple way for possible users.
+          </p>
+        </div>
+        <div class="panel">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>For Eventgoers</h3>
+              <p>Find events, keep track of your schedule, manage your saved or registered events, and build connections with other attendees.</p>
+            </div>
+            <div class="feature-card">
+              <h3>For Businesses</h3>
+              <p>View events on a calendar, manage event operations, and track KPIs that help measure performance and growth.</p>
+            </div>
+            <div class="feature-card">
+              <h3>For Admins</h3>
+              <p>Monitor platform activity, review event and user management tools, and use analytics to support decisions across the system.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="views">
+      <div class="container">
+        <div class="section-head">
+          <h2>User Views</h2>
+          <p>
+            Use the tabs below to show the three sides of your app. Each card includes a spot for a screenshot and a short explanation of what the screen does.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="tabs" role="tablist" aria-label="App views tabs">
+            <button class="tab-btn active" data-tab="eventgoer" role="tab" aria-selected="true">Eventgoer View</button>
+            <button class="tab-btn" data-tab="business" role="tab" aria-selected="false">Business View</button>
+            <button class="tab-btn" data-tab="admin" role="tab" aria-selected="false">Admin View</button>
+          </div>
+
+          <div id="eventgoer" class="tab-panel active">
+            <div class="gallery-grid">
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+Calendar+View" alt="Placeholder for Eventgoer calendar view screenshot" />
+                <div class="shot-meta">
+                  <h3>Calendar View</h3>
+                  <p>Explain how eventgoers browse dates, discover upcoming events, and organize their plans from the calendar screen.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+My+Events" alt="Placeholder for Eventgoer My Events screenshot" />
+                <div class="shot-meta">
+                  <h3>My Events</h3>
+                  <p>Explain how users view saved, joined, or attended events and quickly manage their personal activity in the app.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+My+Connections" alt="Placeholder for Eventgoer My Connections screenshot" />
+                <div class="shot-meta">
+                  <h3>My Connections</h3>
+                  <p>Explain how users connect with other people, grow their network, and keep event-based relationships active.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div id="business" class="tab-panel">
+            <div class="gallery-grid">
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Business+Calendar+View" alt="Placeholder for Business calendar view screenshot" />
+                <div class="shot-meta">
+                  <h3>Calendar View</h3>
+                  <p>Explain how businesses use the calendar to track event dates, availability, and scheduling at a glance.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Business+Event+Management" alt="Placeholder for Business event management screenshot" />
+                <div class="shot-meta">
+                  <h3>Event Management</h3>
+                  <p>Explain how business users create, update, and monitor events, including the main actions available on this screen.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Business+KPI+Dashboard" alt="Placeholder for Business KPI dashboard screenshot" />
+                <div class="shot-meta">
+                  <h3>KPI Dashboard</h3>
+                  <p>Explain what performance metrics are shown here and how they help businesses make better event decisions.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div id="admin" class="tab-panel">
+            <div class="gallery-grid">
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Admin+Calendar+View" alt="Placeholder for Admin calendar view screenshot" />
+                <div class="shot-meta">
+                  <h3>Calendar View</h3>
+                  <p>Explain how admins use the calendar to oversee system-wide activity and review scheduled events across the platform.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Admin+Event+Management" alt="Placeholder for Admin event management screenshot" />
+                <div class="shot-meta">
+                  <h3>Event Management</h3>
+                  <p>Explain how admins review, approve, edit, or manage events and maintain quality across the platform.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Admin+User+Management" alt="Placeholder for Admin user management screenshot" />
+                <div class="shot-meta">
+                  <h3>User Management</h3>
+                  <p>Explain how admins monitor users, permissions, account issues, and platform access from this screen.</p>
+                </div>
+              </article>
+              <article class="shot-card">
+                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Admin+KPI+Dashboard" alt="Placeholder for Admin KPI dashboard screenshot" />
+                <div class="shot-meta">
+                  <h3>KPI Dashboard</h3>
+                  <p>Explain how admins use platform-wide metrics and trends to support decisions, identify issues, and measure engagement.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Capstone Marketing Website • Built as a one-page demo for possible users of the app</p>
+    </div>
+  </footer>
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.tab;
+
+        buttons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        panels.forEach((panel) => panel.classList.remove('active'));
+
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
