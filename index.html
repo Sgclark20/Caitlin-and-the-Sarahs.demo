@@ -39,7 +39,7 @@
     img { max-width: 100%; display: block; }
 
     .container {
-      width: min(var(--max), calc(100% - 32px));
+      width: 1500px;
       margin: 0 auto;
     }
 
@@ -283,13 +283,25 @@
       overflow: hidden;
       background: #ffffff;
       border: 1px solid rgba(31,41,55,0.08);
+      box-shadow: 0 4px 16px rgba(31,41,55,0.06);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .shot-card:hover {
+      box-shadow: 0 8px 32px rgba(31,41,55,0.14);
     }
 
     .shot-card img {
       width: 100%;
-      height: 250px;
+      height: 340px;
       object-fit: cover;
       background: linear-gradient(135deg, rgba(231,84,166,0.08), rgba(82,207,208,0.08));
+      transition: transform 0.35s ease;
+      transform-origin: center center;
+    }
+
+    .shot-card:hover img {
+      transform: scale(1.08);
     }
 
     .shot-meta {
@@ -495,21 +507,21 @@
           <div id="eventgoer" class="tab-panel active">
             <div class="gallery-grid">
               <article class="shot-card">
-                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+Calendar+View" alt="Placeholder for Eventgoer calendar view screenshot" />
+                <img src="screenshots/eventgoer_cal.png" alt="Placeholder for Eventgoer calendar view screenshot" />
                 <div class="shot-meta">
                   <h3>Calendar View</h3>
                   <p>Explain how eventgoers browse dates, discover upcoming events, and organize their plans from the calendar screen.</p>
                 </div>
               </article>
               <article class="shot-card">
-                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+My+Events" alt="Placeholder for Eventgoer My Events screenshot" />
+                <img src="screenshots/eventgoer_myevents.png" alt="Placeholder for Eventgoer My Events screenshot" />
                 <div class="shot-meta">
                   <h3>My Events</h3>
                   <p>Explain how users view saved, joined, or attended events and quickly manage their personal activity in the app.</p>
                 </div>
               </article>
               <article class="shot-card">
-                <img src="https://placehold.co/900x600/f3f6fb/1f2937?text=Eventgoer+My+Connections" alt="Placeholder for Eventgoer My Connections screenshot" />
+                <img src="screenshots/eventgoer_myconnections.png" alt="Placeholder for Eventgoer My Connections screenshot" />
                 <div class="shot-meta">
                   <h3>My Connections</h3>
                   <p>Explain how users connect with other people, grow their network, and keep event-based relationships active.</p>
@@ -678,4 +690,3 @@
   </script>
 </body>
 </html>
- 
